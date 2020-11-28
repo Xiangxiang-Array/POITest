@@ -64,6 +64,7 @@ public class Test {
                     if (cell!=null){
                         String value = cell.getStringCellValue();
                         XSSFCellStyle cellStyle = cell.getCellStyle();
+                        // 这里的样式，我无法加载到 新的Excel中
                         writeRowCell.getCellStyle().cloneStyleFrom(cellStyle);
                         writeRowCell.setCellValue(value);
                     }
