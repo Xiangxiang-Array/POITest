@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * resources 只保留 1.xlsx 文件 如果存在 5.xlsx 请删除后再执行
+ *
+ *
  * @author Xiang想
  * @title: Test
  * @projectName POITest
@@ -15,11 +18,14 @@ import java.io.IOException;
  */
 public class Test {
     public static void main(String[] args) {
+        // 获取当前项目位置
         String homePath = System.getProperty("user.dir");
         String filePath = File.separator + "src" + File.separator + "main" +
                 File.separator + "resources" + File.separator;
 
+        // 源文件
         String readPath = homePath+filePath+"1.xlsx";
+        // 生成文件
         String writePath = homePath+filePath+"5.xlsx";
         SendExcel(readPath,writePath);
 
@@ -31,6 +37,7 @@ public class Test {
         try {
             readWorkBook = new XSSFWorkbook(readPath);
             readSheet = readWorkBook.getSheetAt(0);
+            // 循环读取
             forEachRead(readSheet,writePath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,21 +58,32 @@ public class Test {
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 创建工作表
         XSSFSheet writeSheet = workbook.createSheet("数据报送");
-
+        // 获取最后一行
         int lastRowNum = sheet.getLastRowNum();
+        // 循环行
         for (int i = 0; i <= lastRowNum; i++) {
+            // row : 源行
             XSSFRow row = sheet.getRow(i);
+            // writeRow 生成行
             XSSFRow writeRow = writeSheet.createRow(i);
             if (row!=null){
                 short lastCellNum = row.getLastCellNum();
                 for (int j = 0; j <= lastCellNum; j++) {
-                    XSSFCell writeRowCell = writeRow.createCell(j);
+                    // cell 源行
                     XSSFCell cell = row.getCell(j);
+                    // writeRowCell 生成后文件行
+                    XSSFCell writeRowCell = writeRow.createCell(j);
                     if (cell!=null){
+                        // 从源文件行中读取值
                         String value = cell.getStringCellValue();
+                        // 从源文件行中获取样式
                         XSSFCellStyle cellStyle = cell.getCellStyle();
+
+
                         // 这里的样式，我无法加载到 新的Excel中
                         writeRowCell.getCellStyle().cloneStyleFrom(cellStyle);
+
+                        // 把值写入 生成文件
                         writeRowCell.setCellValue(value);
                     }
                 }
