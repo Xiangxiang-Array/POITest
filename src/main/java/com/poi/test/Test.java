@@ -83,6 +83,12 @@ public class Test {
                         // 这里的样式，我无法加载到 新的Excel中
                         writeRowCell.getCellStyle().cloneStyleFrom(cellStyle);
 
+                        // 模拟更改文件内容
+                        if (i==1&&j==0){
+                            writeRowCell.setCellValue("某某保险公司");
+                            continue;
+                        }
+
                         // 把值写入 生成文件
                         writeRowCell.setCellValue(value);
                     }
